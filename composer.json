@@ -1,0 +1,41 @@
+{
+    "name": "apimatic/kairosemotionapi",
+    "type": "library",
+    "description": "## Overview
+We're building a platform that lets you quickly add Emotion Analysis - https://www.kairos.com/emotion-analysis-api into your apps and services.
+We’ve made it simple to connect with Kairos via our REST-style APIs. Client libraries for your favorite languages are coming soon. 
+
+## Help and Support
+We'd love to hear feedback from you and we're also here to help if you have any challenges.
+We have lots of answers to popular queries in our knowledge base - https://www.kairos.com/support or you can ask us a question - https://www.kairos.com/contact.
+",
+    "keywords": ["Kairos Emotion API","API","SDK"],
+    "homepage": "https://apimatic.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zeeshan @ APIMATIC",
+            "email": "zeeshan@apimatic.io",
+            "homepage": "https://github.com/apimatic",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/apimatic/unirest-php"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "apimatic/unirest-php": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "KairosEmotionAPILib\\": "src/"
+        }
+    }
+}
