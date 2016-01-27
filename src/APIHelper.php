@@ -100,7 +100,7 @@ class APIHelper {
 
         //remove redundant forward slashes
         $query = substr($url, strlen($protocol));
-        $query = preg_replace("#//+#", "/", $query);
+        // $query = preg_replace("#//+#", "/", $query);
 
         //return process url
         return $protocol.$query;

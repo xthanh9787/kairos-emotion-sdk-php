@@ -17,10 +17,13 @@ class Configuration {
 
     //Application ID
     //TODO: Replace the $appId with an appropriate value
-    public static $appId = 'TODO: Replace';
+    public static $appId = '';
 
     //Application Key
     //TODO: Replace the $appKey with an appropriate value
-    public static $appKey = 'TODO: Replace';
+    public static $appKey = '';
+
+    //set timeout in seconds for API processes
+    public static $apiTimeout = 10;
 
 }

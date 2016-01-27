@@ -19,10 +19,14 @@ For using this SDK do the following:
 
     1. Open a new PHP >= 5.3 project and copy the generated PHP files in the project
        directory.
-    2. Use composer to install the dependencies. Usually this can be done through a 
-       context menu command "Instal (dev)".
+    2. Use composer to install the dependencies: composer install
     3. Import classes from your file in your code where needed for example,
            use KairosEmotionAPILib\Controllers\EmotionAnalysisController;
-   
         
-    4. You can now instantiate controllers and call the respective methods.
+    4. You can now instantiate controllers and call the respective methods:
+
+	    namespace KairosEmotionAPILib\Controllers;
+
+		include_once ("src/Controllers/EmotionAnalysisController.php");
+
+		echo EmotionAnalysisController::createMedia('http://media.kairos.com/test.flv');
