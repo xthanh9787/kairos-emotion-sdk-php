@@ -22,36 +22,6 @@ use Unirest\Unirest;
 
 class EmotionAnalysisController {
 
-    /* private fields for configuration */
-
-    /**
-     * Content Type 
-     * @var string
-     */
-    // private $contentType;
-
-    /**
-     * Application ID 
-     * @var string
-     */
-    // private $appId;
-
-    /**
-     * Application Key 
-     * @var string
-     */
-    // private $appKey;
-
-
-    /**
-     * Constructor with authentication and configuration parameters
-     */
-    // function __construct($contentType, $appId, $appKey) {
-    //     $this->contentType = $contentType ? "foo" : Configuration::$contentType;
-    //     $this->appId = $appId ? $appId : Configuration::$appId;
-    //     $this->appKey = $appKey ? $appKey : Configuration::$appKey;
-    // }
-
     /**
      * Create a new media object to be processed.
      * @param  string|null     $source     Optional parameter: The source URL of the media.
@@ -68,6 +38,7 @@ class EmotionAnalysisController {
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($queryBuilder, array (
             'source' => $source,
+            'timeout' => Configuration::$apiTimeout
         ));
 
         // //validate and preprocess url
@@ -80,96 +51,31 @@ class EmotionAnalysisController {
             'Content-Type' => Configuration::$contentType,
             'app_id' => Configuration::$appId,  
             'app_key' => Configuration::$appKey
+            
         );
 
         // //prepare API request
         $request = Unirest::post($queryUrl, $headers);
 
-        // //append custom auth authorization headers
-        // CustomAuthUtility::appendCustomAuthParams($request);
-
-        // //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
-
-
-        // //Error handling using HTTP status codes
-        if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
-        }
-        else {
-            // var_dump("response from createMedia: " . $response->body->id);
-            self::getMediaById($response->body->id);
-        }
-
-        // return $response->body;
-    }
-        
-    /**
-     * Returns the results of a specific uploaded piece of media.
-     * @param  string     $id     Required parameter: The id of the media you are looking for the results from.
-     * @return mixed response from the API call*/
-    public static function getMediaById ( $id ) {
-        // $processTimer = self::getProcessTime();
-
-        $processTimer = time();
-
-        // var_dump("getMediaById: " . $id);
-        //the base uri for api requests
-        $queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $queryBuilder = $queryBuilder.'/media/{id}';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithTemplateParameters($queryBuilder, array ( 'id' => $id, ));
-
-        //validate and preprocess url
-        $queryUrl = APIHelper::cleanUrl($queryBuilder);
-
-        //prepare headers
-        $headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json',
-            'Content-Type' => Configuration::$contentType,
-            'app_id' => Configuration::$appId,  
-            'app_key' => Configuration::$appKey
-        );
-
-        //prepare API request
-        $request = Unirest::get($queryUrl, $headers);
-
         //append custom auth authorization headers
-        // CustomAuthUtility::appendCustomAuthParams($request);
+        CustomAuthUtility::appendCustomAuthParams($request);
 
-        self::processResponse($request, $processTimer, $id);
-        
-    }
-
-    public static function processResponse ($request, $processTimer, $id){
-        //invoke the API call request to fetch the response
+        //and invoke the API call request to fetch the response
         $response = Unirest::getResponse($request);
+
+
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
             throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
         else {
-            $currTime = time();
-            if (($currTime - $processTimer) < Configuration::$apiTimeout) {
-                if (isset($response->body->status) && $response->body->status == "Complete") {
-                    self::deleteMediaById($id);
-                    echo "<pre>" . json_encode($response->body->frames, JSON_PRETTY_PRINT) . "</pre>";
-                }
-                else {
-                    sleep(2);
-                    self::processResponse($request, $processTimer, $id);
-                }
-            }
-            else {
-                echo "Operation timed out";
-            }
+            self::deleteMediaById($response->body->id);
+            // echo "<pre>" . json_encode($response->body->frames, JSON_PRETTY_PRINT) . "</pre>";
+            echo "<pre>" . json_encode($response->body->frames, JSON_PRETTY_PRINT) . "</pre>";
         }
-    }
 
+    }
+        
         
     /**
      * Delete media results. It returns the status of the operation.
