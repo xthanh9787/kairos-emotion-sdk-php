@@ -19,7 +19,13 @@ For using this SDK do the following:
 
     1. Open a new PHP >= 5.3 project and copy the generated PHP files in the project
        directory.
-    2. Use composer to install the dependencies: composer install
+    2. Initially, composer was used to install the dependencies: composer install
+       	Subsequently, these scripts were added to /vendor/apimatic/unirest-php/src/Unirest/Universt.php:
+       		include_once ("vendor/apimatic/unirest-php/src/Unirest/Method.php");
+			include_once ("vendor/apimatic/unirest-php/src/Unirest/Request.php");
+			include_once ("vendor/apimatic/unirest-php/src/Unirest/Response.php");
+		The vendor files were pushed to the repo, so it is no longer necessary to install dependencies
+
     3. Import classes from your file in your code where needed for example,
            use KairosEmotionAPILib\Controllers\EmotionAnalysisController;
         
