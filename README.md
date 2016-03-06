@@ -36,3 +36,11 @@ For using this SDK do the following:
 		include_once ("src/Controllers/EmotionAnalysisController.php");
 
 		echo EmotionAnalysisController::createMedia('http://media.kairos.com/test.flv');
+
+Possible error
+===========
+
+If this error is encountered: Warning: include_once(vendor/apimatic/unirest-php/src/Unirest/Unirest.php): failed to open stream: No such file or directory in /Volumes/My Passport for Mac/Kairos/kairos-emotion-sdk-php/src/Controllers/EmotionAnalysisController.php on line 14
+
+Delete vendors directory, reinstall dependencies using composer install
+Add this line to EmotionAnalysisTest.php: require_once 'vendor/autoload.php';
